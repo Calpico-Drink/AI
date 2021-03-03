@@ -1,4 +1,4 @@
-local Emojis = loadstring(game:HttpGet("https://raw.githubusercontent.com/Calpico-Drink/Roblox-Emoticons/main/Emojis.lua", true))()
+local Emojis = loadstring(game:HttpGet("https://raw.githubusercontent.com/Calpico-Drink/Public-Lua-Projects/main/src/DiscordEmojis/List.lua", true))()
 local mt = getrawmetatable(game)
 local oldindex = mt.__index
 setreadonly(mt, false)
