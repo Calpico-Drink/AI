@@ -1,0 +1,34 @@
+local Emojis = loadstring(game:HttpGet("https://raw.githubusercontent.com/Calpico-Drink/Roblox-Emoticons/main/Emojis.lua", true))()
+local mt = getrawmetatable(game)
+local oldindex = mt.__index
+setreadonly(mt, false)
+mt.__index = newcclosure(function(self,...)
+    local args = {...}
+    if not checkcaller() and self == getParent and args[1] == Unnamed.Name then
+        return nil
+    end
+    return oldindex(self,...)
+end)
+local hook = mt.__namecall
+mt.__namecall = newcclosure(function(event, ...)
+    if not checkcaller() and event.Name == "SayMessageRequest" and getnamecallmethod() == "FireServer" then
+        local args = {...}
+        local message = args[1]
+        message = string.gsub(
+            message, 
+            "(:[%w_]+:)", 
+            function(a)
+                a = string.gsub(a, ":", "")
+                for k,v in next, Emojis do
+                    if string.sub(string.lower(k), 1, string.len(a)) == string.lower(a) then
+                        return v
+                    end
+                end
+                return a
+            end
+        )
+        return hook(event, message, args[2])
+    end
+    return hook(event, ...)
+end)
+setreadonly(mt, true)
